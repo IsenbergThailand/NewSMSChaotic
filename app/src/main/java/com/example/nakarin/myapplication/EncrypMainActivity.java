@@ -109,24 +109,37 @@ public class EncrypMainActivity extends Activity {
 				 String s = sb.toString();
 				 String hexString = new BigInteger(s, 2).toString(16);
 
-				 
-				 sendSMS(recNumString,hexString);
-				 
-				 finish(); 
-			} catch (UnsupportedEncodingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 
-			 
-			 
-		    // sendSMS(recNumString,msgContentString); 
-			 
-			 finish(); 
-			} 
-			 }); 
-	   
-	   	   
+				 sendSMS(recNumString,hexString);
+
+				 finish();
+			 } catch (UnsupportedEncodingException e) {
+				 // TODO Auto-generated catch block
+				 e.printStackTrace();
+			 }
+
+
+
+				 // sendSMS(recNumString,msgContentString);
+
+				 finish();
+			 }
+	   });
+
+
 	} // end onCreate
-	 
+	public static void sendSMS(String recNumString, String encryptedMsg) {
+		try {
+
+			// get a SmsManager
+			SmsManager smsManager = SmsManager.getDefault();
+
+			// Message may exceed 160 characters
+			// need to divide the message into multiples
+			ArrayList<String> parts = smsManager.divideMessage(encryptedMsg);
+			smsManager.sendMultipartTextMessage(recNumString, null, parts,null, null);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 } // end class
